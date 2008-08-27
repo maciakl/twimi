@@ -1,0 +1,65 @@
+#!/bin/bash
+# twimi (c) Lukasz Grzegorz Maciak
+
+#----------------------------------------------------------------------
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#----------------------------------------------------------------------
+
+# check if a config file exists, and create one if it does not
+if [[ ! -a ~/.twimi ]]; then
+	echo "Twimi will store your username and password in ~/.twimi"
+	read -p "username: " -e username
+	read -p "password: " -e password
+	echo "Thanks! Writing ~/.twimi"
+	echo "username=$username" >> ~/.twim
+	echo "password=$password" >> ~/.twim
+fi
+
+# load username and password from the config file
+source ~/.twimi
+
+# check if curl is installed
+if [[ ! -x "/usr/bin/curl" ]]; then
+	echo "Twim requires curl to be installed"
+	exit 1
+fi
+
+while [ 0 -le 1 ] 
+do
+	clear
+	echo ""
+
+	# display the name in funky text (will be ignored if figlet is missing)
+	if [[ -x "/usr/bin/figlet" ]]; then figlet twimi; fi
+
+	echo "twimi (c) Lukasz Grzegorz Maciak"
+	echo ""
+	echo ""
+	
+	read -p "What are you doing? " -e input
+
+	if [ "$input" = "/quit" ]; then break; fi
+
+	if [ "$input" = "/help" ]; then 
+		echo ""
+		echo "TWIM ver 0.1"
+		echo ""
+		echo "/quit to exit"
+		echo "/help to see this message"
+		read
+		continue;
+	fi
+
+	curl --basic --user $username:$password --data status="$input" http://twitter.com/statuses/update.xml > /dev/null
+done
