@@ -16,14 +16,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #----------------------------------------------------------------------
 
+ver="0.1"
+
 # check if a config file exists, and create one if it does not
 if [[ ! -a ~/.twimi ]]; then
 	echo "Twimi will store your username and password in ~/.twimi"
 	read -p "username: " -e username
 	read -p "password: " -e password
 	echo "Thanks! Writing ~/.twimi"
-	echo "username=$username" >> ~/.twim
-	echo "password=$password" >> ~/.twim
+	echo "username=$username" >> ~/.twimi
+	echo "password=$password" >> ~/.twimi
 fi
 
 # load username and password from the config file
@@ -35,6 +37,8 @@ if [[ ! -x "/usr/bin/curl" ]]; then
 	exit 1
 fi
 
+last=""
+
 while [ 0 -le 1 ] 
 do
 	clear
@@ -45,6 +49,7 @@ do
 
 	echo "twimi (c) Lukasz Grzegorz Maciak"
 	echo ""
+	echo "~ $last"
 	echo ""
 	
 	read -p "What are you doing? " -e input
@@ -52,14 +57,31 @@ do
 	if [ "$input" = "/quit" ]; then break; fi
 
 	if [ "$input" = "/help" ]; then 
+		clear
 		echo ""
-		echo "TWIM ver 0.1"
+		if [[ -x "/usr/bin/figlet" ]]; then 
+			figlet twimi $ver; 
+		else
+			echo "twimi $ver"
+		fi
+
 		echo ""
 		echo "/quit to exit"
 		echo "/help to see this message"
+		echo ""
+		echo "Hit ENTER to continue"
 		read
 		continue;
 	fi
 
 	curl --basic --user $username:$password --data status="$input" http://twitter.com/statuses/update.xml > /dev/null
+
+	if [[ "$?" == 0 ]]; then
+		d=`date +"%m/%d/%Y %l:%m %p"`
+		last="$d > $input"
+	else
+		if [[ -x "/usr/bin/figlet" ]]; then figlet Error; fi
+		echo "Oops! Something went wrong. Maybe your internet is down, or maybe Twitter is."
+		read
+	fi	
 done
