@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #----------------------------------------------------------------------
 
-ver="0.2.1"
+ver="0.2.2"
 
 # you can set this to figlet, toilet, cowsay or whatever
 whatlet='figlet'
