@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #----------------------------------------------------------------------
 
-ver="0.1"
+ver="0.2"
 
 # check if a config file exists, and create one if it does not
 if [[ ! -a ~/.twimi ]]; then
@@ -74,7 +74,7 @@ do
 		continue;
 	fi
 
-	curl --basic --user $username:$password --data status="$input" http://twitter.com/statuses/update.xml > /dev/null
+	curl --basic --user $username:$password --data status="$input" --data source="twimi" http://twitter.com/statuses/update.xml > /dev/null
 
 	if [[ "$?" == 0 ]]; then
 		d=`date +"%m/%d/%Y %l:%m %p"`
