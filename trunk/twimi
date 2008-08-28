@@ -62,7 +62,7 @@ do
 	if [ "$input" = "/help" ]; then 
 		clear
 		echo ""
-		if [[ -x "/usr/bin/whatlet" ]]; then 
+		if [[ -x "/usr/bin/$whatlet" ]]; then 
 			$whatlet twimi $ver; 
 		else
 			echo "twimi $ver"
