@@ -16,7 +16,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #----------------------------------------------------------------------
 
-ver="0.2"
+ver="0.2.1"
+
+# you can set this to figlet, toilet, cowsay or whatever
+whatlet='figlet'
 
 # check if a config file exists, and create one if it does not
 if [[ ! -a ~/.twimi ]]; then
@@ -24,8 +27,8 @@ if [[ ! -a ~/.twimi ]]; then
 	read -p "username: " -e username
 	read -p "password: " -e password
 	echo "Thanks! Writing ~/.twimi"
-	echo "username=$username" >> ~/.twimi
-	echo "password=$password" >> ~/.twimi
+	echo "username=\"$username\"" >> ~/.twimi
+	echo "password=\"$password\"" >> ~/.twimi
 fi
 
 # load username and password from the config file
@@ -45,7 +48,7 @@ do
 	echo ""
 
 	# display the name in funky text (will be ignored if figlet is missing)
-	if [[ -x "/usr/bin/figlet" ]]; then figlet twimi; fi
+	if [[ -x "/usr/bin/$whatlet" ]]; then $whatlet twimi; fi
 
 	echo "twimi (c) Lukasz Grzegorz Maciak"
 	echo ""
@@ -59,8 +62,8 @@ do
 	if [ "$input" = "/help" ]; then 
 		clear
 		echo ""
-		if [[ -x "/usr/bin/figlet" ]]; then 
-			figlet twimi $ver; 
+		if [[ -x "/usr/bin/whatlet" ]]; then 
+			$whatlet twimi $ver; 
 		else
 			echo "twimi $ver"
 		fi
@@ -80,7 +83,7 @@ do
 		d=`date +"%m/%d/%Y %l:%m %p"`
 		last="$d > $input"
 	else
-		if [[ -x "/usr/bin/figlet" ]]; then figlet Error; fi
+		if [[ -x "/usr/bin/$whatlet" ]]; then $whatlet Error; fi
 		echo "Oops! Something went wrong. Maybe your internet is down, or maybe Twitter is."
 		read
 	fi	
