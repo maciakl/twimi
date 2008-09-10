@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #----------------------------------------------------------------------
 
-ver="0.2.2"
+ver="0.3.0"
 
 # you can set this to figlet, toilet, cowsay or whatever
 whatlet='figlet'
@@ -27,12 +27,18 @@ if [[ ! -a ~/.twimi ]]; then
 	read -p "username: " -e username
 	read -p "password: " -e password
 	echo "Thanks! Writing ~/.twimi"
+
+	b64psw=$(echo $password | base64)
+
 	echo "username=\"$username\"" >> ~/.twimi
-	echo "password=\"$password\"" >> ~/.twimi
+	echo "password=\"$b64psw\"" >> ~/.twimi
 fi
 
 # load username and password from the config file
 source ~/.twimi
+
+# decode password
+password=$(echo $password | base64 -d)
 
 # check if curl is installed
 if [[ ! -x "/usr/bin/curl" ]]; then
