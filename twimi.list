@@ -1,0 +1,10 @@
+%product twimi
+%copyright 2008 by Lukasz Grzegorz Maciak
+%vendor Lukasz Grzegorz Maciak
+%description A minimalistic, command line Twitter updater.
+%version 0.4
+%readme README
+%license LICENSE
+%requires curl
+
+f 755 root sys /usr/bin/twimi twimi
